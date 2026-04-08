@@ -69,7 +69,7 @@ Componentes:
 
 - `producer` (NestJS, puerto `3000` por defecto)
 - `consumer` (NestJS, puerto `3001` por defecto)
-- `rabbitmq` (Docker Compose, puerto `5672`)
+- `rabbitmq` (Docker Compose, puertos `5672` y `15672`)
 
 Flujo funcional:
 
@@ -100,7 +100,7 @@ Antes de ejecutar la demo necesitas:
 
 - Docker y Docker Compose instalados,
 - Node.js y npm instalados,
-- puertos libres: `3000`, `3001`, `5672`.
+- puertos libres: `3000`, `3001`, `5672`, `15672`.
 
 Nota: si no tienes la imagen localmente, `docker compose up` la descargara automaticamente (equivalente a `docker pull rabbitmq`).
 
@@ -135,6 +135,7 @@ El `docker-compose.yaml` ya define el servicio con credenciales de demo:
 - usuario: `admin`
 - password: `admin`
 - host AMQP: `localhost:5672`
+- portal de administracion: `http://localhost:15672`
 
 En produccion, NUNCA utilizar estas credenciales, utilizar credenciales fuertes para evitar potenciales vulnerabilidades de seguridad, las credenciales expuestas son solo para facilitar los propositos didacticos de este proyecto.
 
@@ -149,6 +150,12 @@ Verifica estado:
 ```bash
 docker compose ps
 ```
+
+Acceso al panel de administracion de RabbitMQ:
+
+- URL: `http://localhost:15672`
+- Usuario: `admin`
+- Password: `admin`
 
 Detener infraestructura:
 
