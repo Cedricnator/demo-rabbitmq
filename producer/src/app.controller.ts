@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -8,5 +8,10 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.appService.getHello();
+  }
+
+  @Get('send')
+  sendMessage(@Query('message') message?: string) {
+    return this.appService.sendToConsumer(message ?? 'Mensaje de prueba');
   }
 }
