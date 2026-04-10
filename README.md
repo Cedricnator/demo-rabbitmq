@@ -1,12 +1,12 @@
-# Demostracion de mensajeria con NestJS y RabbitMQ
+# Demostración de mensajería con NestJS y RabbitMQ
 
-## 1. Objetivo de la demostracion
+## 1. Objetivo de la demostración
 
-Este proyecto muestra un flujo minimo y real de comunicacion asincrona entre dos servicios NestJS:
+Este proyecto muestra un flujo mínimo y real de comunicación asíncrona entre dos servicios NestJS:
 
 - `producer`: expone un endpoint HTTP y publica un mensaje.
 - `consumer`: recibe el mensaje, lo procesa y devuelve una respuesta.
-- `rabbitmq`: actua como intermediario (broker) para transportar mensajes entre ambos servicios.
+- `rabbitmq`: actúa como intermediario (broker) para transportar mensajes entre ambos servicios.
 
 La idea es demostrar el patron request/reply sobre RabbitMQ de forma simple, clara y reproducible.
 
@@ -14,12 +14,12 @@ La idea es demostrar el patron request/reply sobre RabbitMQ de forma simple, cla
 
 ## 2. Que es RabbitMQ
 
-RabbitMQ es un sistema de mensajeria (message broker) que implementa principalmente AMQP (Advanced Message Queuing Protocol). Su funcion es recibir mensajes de productores, enrutarlos y entregarlos a consumidores de manera confiable.
+RabbitMQ es un sistema de mensajería (message broker) que implementa principalmente AMQP (Advanced Message Queuing Protocol). Su función es recibir mensajes de productores, enrutarlos y entregarlos a consumidores de manera confiable.
 
 RabbitMQ permite:
 
 - desacoplar servicios que no deben llamarse directamente,
-- procesar tareas de forma asincrona,
+- procesar tareas de forma asíncrona,
 - absorber picos de carga mediante colas,
 - mejorar resiliencia en arquitecturas distribuidas.
 
@@ -45,21 +45,21 @@ Esto reduce el acoplamiento entre servicios y facilita evolucionar sistemas comp
 
 ## 4. Donde se usa este tipo de arquitectura
 
-RabbitMQ y los brokers de mensajes se usan comunmente en:
+RabbitMQ y los brokers de mensajes se usan comúnmente en:
 
 - arquitecturas de microservicios,
 - sistemas event-driven,
 - procesamiento en segundo plano (background jobs),
-- integraciones entre sistemas heterogeneos,
-- pipelines de procesamiento (pagos, notificaciones, facturacion, auditoria),
+- integraciones entre sistemas heterogéneos,
+- pipelines de procesamiento (pagos, notificaciones, facturación, auditoria),
 - escenarios de alta concurrencia donde conviene desacoplar productor y consumidor.
 
-Tambien es habitual en patrones como:
+También es habitual en patrones como:
 
 - pub/sub,
 - work queues,
-- request/reply asincrono,
-- sagas y orquestacion de procesos distribuidos.
+- request/reply asíncrono,
+- sagas y orquestación de procesos distribuidos.
 
 ---
 
@@ -81,7 +81,7 @@ Flujo funcional:
 6. RabbitMQ entrega la respuesta al `producer` (request/reply).
 7. `producer` responde al cliente HTTP con el resultado final.
 
-Representacion simplificada:
+Representación simplificada:
 
 ```text
 Cliente HTTP
@@ -102,13 +102,13 @@ Antes de ejecutar la demo necesitas:
 - Node.js y npm instalados,
 - puertos libres: `3000`, `3001`, `5672`, `15672`.
 
-Nota: si no tienes la imagen localmente, `docker compose up` la descargara automaticamente (equivalente a `docker pull rabbitmq`).
+Nota: si no tienes la imagen localmente, `docker compose up` la descargara automáticamente (equivalente a `docker pull rabbitmq`).
 
 ---
 
-## 7. Instalacion del proyecto
+## 7. Instalación del proyecto
 
-Desde la raiz del repositorio:
+Desde la raíz del repositorio:
 
 ```bash
 npm install --prefix producer
@@ -116,12 +116,13 @@ npm install --prefix consumer
 ```
 
 Desde los servicios:
+
 ```bash
 cd producer
 npm install
 cd ..
 cd consumer
-npm install 
+npm install
 ```
 
 Esto instala todas las dependencias de ambos servicios NestJS.
@@ -135,9 +136,9 @@ El `docker-compose.yaml` ya define el servicio con credenciales de demo:
 - usuario: `admin`
 - password: `admin`
 - host AMQP: `localhost:5672`
-- portal de administracion: `http://localhost:15672`
+- portal de administración: `http://localhost:15672`
 
-En produccion, NUNCA utilizar estas credenciales, utilizar credenciales fuertes para evitar potenciales vulnerabilidades de seguridad, las credenciales expuestas son solo para facilitar los propositos didacticos de este proyecto.
+En producción, NUNCA utilizar estas credenciales, utilizar credenciales fuertes para evitar potenciales vulnerabilidades de seguridad, las credenciales expuestas son solo para facilitar los propósitos didácticos de este proyecto.
 
 Inicia RabbitMQ:
 
@@ -151,7 +152,7 @@ Verifica estado:
 docker compose ps
 ```
 
-Acceso al panel de administracion de RabbitMQ:
+Acceso al panel de administración de RabbitMQ:
 
 - URL: `http://localhost:15672`
 - Usuario: `admin`
@@ -165,7 +166,7 @@ docker compose down
 
 ---
 
-## 9. Levantar los servicios de aplicacion
+## 9. Levantar los servicios de aplicación
 
 Abre dos terminales.
 
@@ -175,7 +176,7 @@ Terminal 1 (consumer):
 npm run start --prefix consumer
 ```
 
-o 
+o
 
 ```bash
 cd consumer
@@ -195,7 +196,7 @@ cd consumer
 npm run start
 ```
 
-Valores por defecto usados por el codigo:
+Valores por defecto usados por el código:
 
 - `RABBITMQ_URL=amqp://admin:admin@localhost:5672`
 - `RABBITMQ_QUEUE=demo_queue`
@@ -206,7 +207,7 @@ Puedes sobreescribirlos con variables de entorno si lo necesitas.
 
 ## 10. Ejemplo de uso
 
-Con RabbitMQ y ambos servicios activos, ejecuta:
+Con RabbitMQ y ambos servicios activos, ejecuta desde una nueva terminal:
 
 ```bash
 curl "http://localhost:3000/send?message=hola-rabbit"
@@ -216,30 +217,39 @@ curl "http://localhost:3000/send?message=hola-rabbit"
 
 ```json
 {
-  "producerStatus": "message sent",
-  "sentMessage": "hola-rabbit",
-  "consumerResponse": {
-    "status": "processed",
-    "processedMessage": "Consumer recibio: hola-rabbit",
-    "processedAt": "2026-04-08T23:29:57.264Z"
-  }
+    "producerStatus": "message sent",
+    "sentMessage": "hola-rabbit",
+    "consumerResponse": {
+        "status": "processed",
+        "processedMessage": "Consumer recibio: hola-rabbit",
+        "processedAt": "2026-04-08T23:29:57.264Z"
+    }
 }
 ```
 
-Interpretacion:
+Interpretación:
 
-- `producerStatus`: confirma que el producer envio el mensaje al broker,
+- `producerStatus`: confirma que el producer envió el mensaje al broker,
 - `sentMessage`: payload original enviado,
 - `consumerResponse`: respuesta generada por el consumer luego del procesamiento.
 
+### Panel de administración
+
+A traves del panel de administración podemos observar el comportamiento y monitorear tanto el estado de la cola y los mensajes enviados.
+
+<div style="text-align: center;">
+  <img src="images/rabbitmq-dashboard.png" alt="Panel de Administración">
+  <p style="font-size: 0.9em; font-style: italic;">Panel de Administración RabbitMQ</p>
+</div>
+
 ---
 
-## 11. Puntos tecnicos clave de la implementacion
+## 11. Puntos técnicos clave de la implementación
 
 - El producer usa `ClientProxy` de `@nestjs/microservices` para enviar mensajes RMQ.
 - El consumer registra un microservicio RMQ y maneja mensajes con `@MessagePattern`.
 - Ambos comparten la misma cola de demo (`demo_queue`).
-- La comunicacion es asincrona a nivel transporte, pero expuesta como request/reply para la demo.
+- La comunicación es asíncrona a nivel transporte, pero expuesta como request/reply para la demo.
 
 Archivos principales:
 
@@ -255,7 +265,7 @@ Archivos principales:
 
 ## 12. Conclusiones
 
-Esta demostracion valida un caso base de mensajeria con RabbitMQ en un entorno de microservicios NestJS:
+Esta demostración valida un caso base de mensajería con RabbitMQ en un entorno de microservicios NestJS:
 
 - se desacopla el emisor del procesador,
 - se centraliza el transporte en un broker,
